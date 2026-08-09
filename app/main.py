@@ -26,12 +26,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title=settings.APP_NAME,
-    description=(
-        "Production-ready RAG Backend featuring dual-strategy Document Ingestion, "
-        "Redis-backed Conversational Chat Memory, Vector Search via Qdrant/Pinecone, "
-        "and LLM-assisted Interview Booking System."
-    ),
+    title="RAG Backend API",
     version="1.0.0",
     lifespan=lifespan,
     docs_url="/docs",
@@ -49,6 +44,16 @@ app.add_middleware(
 
 # Attach API Routes
 app.include_router(api_router)
+
+
+@app.get("/", tags=["Root"])
+def root():
+    """Root endpoint providing welcome message and documentation link."""
+    return {
+        "message": "Welcome to RAG Backend API",
+        "docs": "/docs",
+        "health": "/health"
+    }
 
 
 @app.get("/health", tags=["Health"])
